@@ -1,0 +1,91 @@
+body {
+  background-image: url("../img/background.png");
+}
+
+#start-box,
+#roll-box,
+#winner-box {
+  display: none;
+}
+
+.container {
+  width: 500px;
+  height: 500px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+button {
+  background-color: #fcba01;
+  border: 5px solid black;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: black;
+  color: #fcba01;
+}
+
+input {
+  background-color: #fcba01;
+  border: 3px solid black;
+}
+
+label,
+input {
+  width: 100%;
+}
+
+h3 {
+  text-align: center;
+}
+
+.dices-choice input,
+label {
+  width: inherit;
+}
+
+.dices-choice input {
+  margin: 0 5px 0 20px;
+}
+
+.dices {
+  display: flex;
+  justify-content: space-around;
+}
+
+#dice-1 {
+  background-image: url("../img/dice1.png");
+}
+
+#dice-2 {
+  background-image: url("../img/dice2.png");
+}
+
+#dice-3 {
+  background-image: url("../img/dice3.png");
+}
+
+#dice-4 {
+  background-image: url("../img/dice4.png");
+}
+
+#dice-5 {
+  background-image: url("../img/dice5.png");
+}
+
+#dice-6 {
+  background-image: url("../img/dice6.png");
+}
+
+.dice1,
+.dice2 {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+}

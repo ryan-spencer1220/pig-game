@@ -22,6 +22,8 @@ function rollFunction() {
   return roll;
 }
 
+// User Interface
+
 function switchPlayer(id) {
   if (id == 1) {
     $("#player-name").html($("#player2-name").text());
@@ -33,14 +35,28 @@ function switchPlayer(id) {
   return id;
 }
 
-// User Interface
+function checkWinner(currentRoll, id) {
+  if (id == 1 && currentRoll + parseInt($("#total1").text()) >= 100) {
+    $("#winner").html($("#player1-name").text());
+    $("#winner-box").show();
+    $("#roll-box").hide();
+  } else if (id == 2 && currentRoll + parseInt($("#total2").text()) >= 100) {
+    $("#winner").html($("#player2-name").text());
+    $("#winner-box").show();
+    $("#roll-box").hide();
+  }
+}
+
 $(document).ready(function () {
   let roll = 0;
   let playerOne = new Player(0, 1, "");
   let playerTwo = new Player(0, 2, "");
+  let computerPlayer = false;
 
   $("form#start").submit(function (event) {
     event.preventDefault();
+    $("#roll-box").show();
+    $("#start-box").hide();
     const playerOneName = $("input#player1").val();
     const playerTwoName = $("input#player2").val();
     playerOne.name = playerOneName;
@@ -53,9 +69,13 @@ $(document).ready(function () {
     $("#player1-name").html(playerOne.name);
     $("#player2-name").html(playerTwo.name);
     id = 1;
+    if ($("#computerOn").is(":checked")) {
+      computerPlayer = true;
+    }
   });
 
   $("button#roll").click(function () {
+    let diceQuantity = $('input[name="dice-quantity']:checked"))
     const diceQuantity = $("input#dice-quantity").val();
     let rollSum = 0;
     let roll1 = false;
@@ -64,7 +84,6 @@ $(document).ready(function () {
       roll = rollFunction();
       console.log(roll);
       rollSum += roll;
-
       if (roll == 1) {
         roll1 = true;
       }
@@ -72,9 +91,16 @@ $(document).ready(function () {
     if (roll1) {
       currentRoll = 0;
       $("#this-roll").empty();
-      switchPlayer(id);
+      // if ((computerPlayer = false)) {
+        switchPlayer(id);
+      // } else {
+      //   let computerroll = rollFunction();
+      //   let computerroll2 = rollFunction();
+      //   $("#total2").html(computeroll1 + computerroll2);
+      // }
     } else {
       currentRoll = rollTheDice(rollSum);
+      checkWinner(currentRoll, id);
       $("#this-roll").html(rollSum);
     }
     $("#current-roll").html(currentRoll);
@@ -96,5 +122,10 @@ $(document).ready(function () {
     id = switchPlayer(id);
     console.log(id);
     $("#this-roll").empty();
+  });
+
+  $("button#play").click(function () {
+    $("#start-box").show();
+    $("#play-box").hide();
   });
 });

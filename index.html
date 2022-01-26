@@ -20,10 +20,16 @@
         <div class="form-group">
           <label for="player2">Player 2</label>
           <input type="text" id="player2" />
+          <input type="checkbox" id="computerOn" />
+          <label for="computerOn">Computer Player</label>
         </div>
-        <div class="form-group">
-          <label for="dice-quantity">How many dice you want to play?</label>
-          <input type="text" id="dice-quantity" />
+        <div class="form-group dices-choice">
+          <label for="dice-quantity">How many dices you want to play?</label>
+          <br />
+          <input type="radio" val="one-dice-game" name="dice-quantity" />
+          <label for="dice-quantity">One Dice</label>
+          <input type="radio" val="two-dice-game" name="dice-quantity" />
+          <label for="dice-quantity">Two Dices</label>
         </div>
         <div class="form-group">
           <button type="submit">Start</button>
@@ -34,10 +40,17 @@
       <h3><span id="player-name"></span>'s turn</h3>
       <p><span id="player1-name"></span>'s total: <span id="total1"></span></p>
       <p><span id="player2-name"></span>'s total: <span id="total2"></span></p>
+      <div class="dices">
+        <div class="dice1" id="dice-1"></div>
+        <div class="dice2" id="dice-2"></div>
+      </div>
       <p>This roll: <span id="this-roll"></span></p>
       <p>Current roll total: <span id="current-roll"></span></p>
       <button type="button" id="roll">Roll</button>
       <button type="button" id="hold">Hold</button>
+    </div>
+    <div class="container" id="winner-box">
+      <p><span id="winner"></span> is a winner</p>
     </div>
   </body>
 </html>
