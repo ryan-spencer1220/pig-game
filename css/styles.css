@@ -2,6 +2,7 @@ body {
   background-image: url("../img/background.png");
 }
 
+#opponent-box,
 #start-box,
 #roll-box,
 #winner-box {
@@ -45,8 +46,14 @@ h3 {
   text-align: center;
 }
 
+#player2-option {
+  display: none;
+}
+
 .dices-choice input,
-label {
+label,
+.oponent input,
+.oponent label {
   width: inherit;
 }
 

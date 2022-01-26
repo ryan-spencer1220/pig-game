@@ -52,6 +52,7 @@ $(document).ready(function () {
   let playerOne = new Player(0, 1, "");
   let playerTwo = new Player(0, 2, "");
   let computerPlayer = false;
+  let opponent = "";
 
   $("form#start").submit(function (event) {
     event.preventDefault();
@@ -68,18 +69,12 @@ $(document).ready(function () {
     $("#player-name").html(playerOne.name);
     $("#player1-name").html(playerOne.name);
     $("#player2-name").html(playerTwo.name);
-    id = 1;
-    if ($("#computerOn").is(":checked")) {
-      computerPlayer = true;
-    }
   });
 
   $("button#roll").click(function () {
-    let diceQuantity = $('input[name="dice-quantity']:checked"))
-    const diceQuantity = $("input#dice-quantity").val();
+    let diceQuantity = parseInt($("input[name=dice-quantity]:checked").val());
     let rollSum = 0;
     let roll1 = false;
-
     for (let i = 0; i < diceQuantity; i++) {
       roll = rollFunction();
       console.log(roll);
@@ -88,16 +83,17 @@ $(document).ready(function () {
         roll1 = true;
       }
     }
+
     if (roll1) {
       currentRoll = 0;
       $("#this-roll").empty();
-      // if ((computerPlayer = false)) {
+      if ((opponent = "player2")) {
         switchPlayer(id);
-      // } else {
-      //   let computerroll = rollFunction();
-      //   let computerroll2 = rollFunction();
-      //   $("#total2").html(computeroll1 + computerroll2);
-      // }
+      } else {
+        let computerroll1 = rollFunction();
+        let computerroll2 = rollFunction();
+        $("#total2").html(computerroll1 + computerroll2);
+      }
     } else {
       currentRoll = rollTheDice(rollSum);
       checkWinner(currentRoll, id);
@@ -125,7 +121,20 @@ $(document).ready(function () {
   });
 
   $("button#play").click(function () {
-    $("#start-box").show();
+    $("#opponent-box").show();
     $("#play-box").hide();
+  });
+
+  $("button#submit").click(function () {
+    $("#opponent-box").hide();
+    $("#start-box").show();
+    opponent = $("input[name=opponent]:checked").val();
+
+    console.log(opponent);
+    if (opponent === "computer") {
+    } else {
+      $("#player2-option").show();
+    }
+    id = 1;
   });
 });

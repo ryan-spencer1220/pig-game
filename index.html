@@ -11,25 +11,36 @@
     <div class="container" id="play-box">
       <button type="button" id="play">Play</button>
     </div>
+    <div class="container" id="opponent-box">
+      <label for="player2"
+        >Do you want to play with computer or player 2?</label
+      >
+      <div class="form-group oponent">
+        <input type="radio" name="opponent" value="computer" checked />
+        <label>Computer Player</label>
+        <input type="radio" name="opponent" value="player2" />
+        <label>Second Player</label>
+      </div>
+      <button type="button" id="submit">Submit</button>
+    </div>
     <div class="container" id="start-box">
       <form id="start">
         <div class="form-group">
           <label for="player1">Player 1</label>
           <input type="text" id="player1" />
         </div>
-        <div class="form-group">
+
+        <div class="form-group" id="player2-option">
           <label for="player2">Player 2</label>
           <input type="text" id="player2" />
-          <input type="checkbox" id="computerOn" />
-          <label for="computerOn">Computer Player</label>
         </div>
         <div class="form-group dices-choice">
           <label for="dice-quantity">How many dices you want to play?</label>
           <br />
-          <input type="radio" val="one-dice-game" name="dice-quantity" />
-          <label for="dice-quantity">One Dice</label>
-          <input type="radio" val="two-dice-game" name="dice-quantity" />
-          <label for="dice-quantity">Two Dices</label>
+          <input type="radio" name="dice-quantity" value="1" checked />
+          <label>One Dice</label>
+          <input type="radio" name="dice-quantity" value="2" />
+          <label>Two Dices</label>
         </div>
         <div class="form-group">
           <button type="submit">Start</button>
