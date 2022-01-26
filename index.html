@@ -8,11 +8,11 @@
     <script src="js/scripts.js"></script>
   </head>
   <body>
-    <div class="container">
+    <div class="container" id="play-box">
       <button type="button" id="play">Play</button>
     </div>
-    <div class="container">
-      <form id="form">
+    <div class="container" id="start-box">
+      <form id="start">
         <div class="form-group">
           <label for="player1">Player 1</label>
           <input type="text" id="player1" />
@@ -30,9 +30,10 @@
         </div>
       </form>
     </div>
-    <div class="container">
+    <div class="container" id="roll-box">
       <h3><span id="player-name"></span>'s turn</h3>
-      <p>Total: <span id="total"></span></p>
+      <p><span id="player1-name"></span>'s total: <span id="total1"></span></p>
+      <p><span id="player2-name"></span>'s total: <span id="total2"></span></p>
       <p>This roll: <span id="this-roll"></span></p>
       <button type="button" id="roll">Roll</button>
       <button type="button" id="hold">Hold</button>
