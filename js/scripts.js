@@ -1,6 +1,7 @@
 // Business Logic
 let currentRoll = 0;
 let id = 0;
+let players = new List();
 
 function Player(total, id, name) {
   this.total = total;
@@ -12,36 +13,51 @@ Player.prototype.sum = function (roll) {
   this.total += roll;
 };
 
+function List() {
+  this.players = {};
+}
+
+List.prototype.addPlayers = function (player) {
+  this.players[player.id] = player;
+};
+
+List.prototype.findPlayer = function (id) {
+  if (this.players[id] != undefined) {
+    return this.players[id];
+  }
+  return false;
+};
+
 function rollTheDice(roll) {
   currentRoll += roll;
   return currentRoll;
 }
 
 function rollFunction() {
-  roll = Math.trunc(Math.random() * 6) + 1;
+  roll = Math.trunc(Math.random() * 2) + 1;
   return roll;
 }
 
 // User Interface
 
 function switchPlayer(id) {
+  let player = players.findPlayer(id);
+
   if (id == 1) {
-    $("#player-name").html($("#player2-name").text());
+    $("#player-name").html(player.name);
     id = 2;
   } else {
-    $("#player-name").html($("#player1-name").text());
+    $("#player-name").html(player.name);
     id = 1;
   }
   return id;
 }
 
 function checkWinner(currentRoll, id) {
-  if (id == 1 && currentRoll + parseInt($("#total1").text()) >= 100) {
-    $("#winner").html($("#player1-name").text());
-    $("#winner-box").show();
-    $("#roll-box").hide();
-  } else if (id == 2 && currentRoll + parseInt($("#total2").text()) >= 100) {
-    $("#winner").html($("#player2-name").text());
+  let player = players.findPlayer(id);
+
+  if (currentRoll + parseInt(player.total) >= 100) {
+    $("#winner").html(player.name);
     $("#winner-box").show();
     $("#roll-box").hide();
   }
@@ -49,15 +65,16 @@ function checkWinner(currentRoll, id) {
 
 $(document).ready(function () {
   let roll = 0;
+  let opponent = "";
   let playerOne = new Player(0, 1, "");
   let playerTwo = new Player(0, 2, "");
-  let computerPlayer = false;
-  let opponent = "";
 
   $("form#start").submit(function (event) {
     event.preventDefault();
     $("#roll-box").show();
     $("#start-box").hide();
+    players.addPlayers(playerOne);
+    players.addPlayers(playerTwo);
     const playerOneName = $("input#player1").val();
     const playerTwoName = $("input#player2").val();
     playerOne.name = playerOneName;
@@ -75,25 +92,30 @@ $(document).ready(function () {
     let diceQuantity = parseInt($("input[name=dice-quantity]:checked").val());
     let rollSum = 0;
     let roll1 = false;
+    let roll1Twice = false;
+    let player = players.findPlayer(id);
+
     for (let i = 0; i < diceQuantity; i++) {
       roll = rollFunction();
+      $(".dice" + (i + 1)).attr("id", "dice-" + roll);
       console.log(roll);
       rollSum += roll;
       if (roll == 1) {
         roll1 = true;
+        roll = 0;
+      } else if (roll1 && roll == 1) {
+        roll1Twice;
       }
     }
 
     if (roll1) {
       currentRoll = 0;
       $("#this-roll").empty();
-      if ((opponent = "player2")) {
-        switchPlayer(id);
-      } else {
-        let computerroll1 = rollFunction();
-        let computerroll2 = rollFunction();
-        $("#total2").html(computerroll1 + computerroll2);
-      }
+      switchPlayer(id);
+    } else if (roll1Twice) {
+      currentRoll = 0;
+      player.total = 0;
+      switchPlayer(id);
     } else {
       currentRoll = rollTheDice(rollSum);
       checkWinner(currentRoll, id);
@@ -104,20 +126,16 @@ $(document).ready(function () {
   });
 
   $("button#hold").click(function () {
-    $("#current-roll").empty();
-    console.log(id);
-    if (id == 1) {
-      playerOne.sum(currentRoll);
-      currentRoll = 0;
-      $("#total1").html(playerOne.total);
-    } else {
-      playerTwo.sum(currentRoll);
-      currentRoll = 0;
-      $("#total2").html(playerTwo.total);
-    }
+    let player = players.findPlayer(id);
+
+    player.sum(currentRoll);
+    $("#total" + player.id).html(player.total);
+
+    currentRoll = 0;
     id = switchPlayer(id);
-    console.log(id);
+
     $("#this-roll").empty();
+    $("#current-roll").empty();
   });
 
   $("button#play").click(function () {
