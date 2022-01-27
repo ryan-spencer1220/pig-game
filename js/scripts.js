@@ -49,8 +49,7 @@ function switchPlayer(id) {
 
   let player = players.findPlayer(id);
   $("#player-name").html(player.name);
-  /*$(".dice1").attr("id", "");
-  $(".dice2").attr("id", "");*/
+
   return id;
 }
 
@@ -80,11 +79,12 @@ function computer() {
     let player = players.findPlayer(id);
     player.name = "Computer";
     $("#player2-name").html(player.name);
-    rollBigFunction();
+    if (!rollBigFunction()) {
+      if (!rollBigFunction()) {
+        holdFunction();
+      }
+    }
     console.log("computer");
-    setTimeout(function () {
-      holdFunction();
-    }, 3000);
   }
 }
 
@@ -95,6 +95,10 @@ function holdFunction() {
 
   $("#this-roll").empty();
   $("#current-roll").empty();
+  setTimeout(function () {
+    $(".dice1").attr("id", "");
+    $(".dice2").attr("id", "");
+  }, 1000);
 }
 
 function rollBigFunction() {
