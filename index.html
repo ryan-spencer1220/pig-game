@@ -37,9 +37,9 @@
         <div class="form-group dices-choice">
           <label for="dice-quantity">How many dices you want to play?</label>
           <br />
-          <input type="radio" name="dice-quantity" value="1" checked />
+          <input type="radio" name="dice-quantity" value="1" />
           <label>One Dice</label>
-          <input type="radio" name="dice-quantity" value="2" />
+          <input type="radio" name="dice-quantity" value="2" checked />
           <label>Two Dices</label>
         </div>
         <div class="form-group">
@@ -62,6 +62,9 @@
     </div>
     <div class="container" id="winner-box">
       <p><span id="winner"></span> is a winner</p>
+    </div>
+    <div class="container" id="switch-box">
+      <p>Sorry, you've got 1. Now it's <span id="next-player"></span>'s turn</p>
     </div>
   </body>
 </html>

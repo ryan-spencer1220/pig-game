@@ -2,6 +2,7 @@ body {
   background-image: url("../img/background.png");
 }
 
+#switch-box,
 #opponent-box,
 #start-box,
 #roll-box,
@@ -9,6 +10,16 @@ body {
   display: none;
 }
 
+#switch-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: red;
+  padding: 50px;
+  height: auto;
+  text-align: center;
+}
 .container {
   width: 500px;
   height: 500px;

@@ -1,6 +1,6 @@
 // Business Logic
 let currentRoll = 0;
-let id = 0;
+let id = 1;
 let players = new List();
 
 function Player(total, id, name) {
@@ -34,22 +34,23 @@ function rollTheDice(roll) {
 }
 
 function rollFunction() {
-  roll = Math.trunc(Math.random() * 2) + 1;
+  roll = Math.trunc(Math.random() * 5) + 1;
   return roll;
 }
 
 // User Interface
 
 function switchPlayer(id) {
-  let player = players.findPlayer(id);
-
   if (id == 1) {
-    $("#player-name").html(player.name);
     id = 2;
   } else {
-    $("#player-name").html(player.name);
     id = 1;
   }
+
+  let player = players.findPlayer(id);
+  $("#player-name").html(player.name);
+  /*$(".dice1").attr("id", "");
+  $(".dice2").attr("id", "");*/
   return id;
 }
 
@@ -63,9 +64,77 @@ function checkWinner(currentRoll, id) {
   }
 }
 
+function switchMessage(id) {
+  let player = players.findPlayer(id);
+
+  $("#switch-box").show();
+  $("#next-player").html(player.name);
+  setTimeout(function () {
+    $("#switch-box").hide();
+  }, 1000);
+}
+
+function computer() {
+  let opponent = $("input[name=opponent]:checked").val();
+  if (id == 2 && opponent === "computer") {
+    let player = players.findPlayer(id);
+    player.name = "Computer";
+    $("#player2-name").html(player.name);
+    rollBigFunction();
+    console.log("computer");
+    setTimeout(function () {
+      holdFunction();
+    }, 3000);
+  }
+}
+
+function holdFunction() {
+  currentRoll = 0;
+  id = switchPlayer(id);
+  computer();
+
+  $("#this-roll").empty();
+  $("#current-roll").empty();
+}
+
+function rollBigFunction() {
+  console.log("roll");
+  console.log(id);
+  let diceQuantity = parseInt($("input[name=dice-quantity]:checked").val());
+  let rollSum = 0;
+  let rolledOne = false;
+  let rolledOneTwice = false;
+  let player = players.findPlayer(id);
+  for (let i = 0; i < diceQuantity; i++) {
+    let roll = rollFunction();
+    $(".dice" + (i + 1)).attr("id", "dice-" + roll);
+    rollSum += roll;
+    if (rolledOne && rollSum == 2) {
+      rolledOneTwice = true;
+    } else if (roll == 1) {
+      rolledOne = true;
+    }
+  }
+
+  if (rolledOne) {
+    if (rolledOneTwice) {
+      player.total = 0;
+      $("#total" + player.id).html(player.total);
+    }
+    holdFunction();
+  } else {
+    currentRoll = rollTheDice(rollSum);
+    player.sum(currentRoll);
+    $("#this-roll").html(rollSum);
+    $("#total" + player.id).html(player.total);
+
+    checkWinner(currentRoll, player.id);
+  }
+  $("#current-roll").html(currentRoll);
+  return rolledOne;
+}
+
 $(document).ready(function () {
-  let roll = 0;
-  let opponent = "";
   let playerOne = new Player(0, 1, "");
   let playerTwo = new Player(0, 2, "");
 
@@ -73,14 +142,15 @@ $(document).ready(function () {
     event.preventDefault();
     $("#roll-box").show();
     $("#start-box").hide();
-    players.addPlayers(playerOne);
-    players.addPlayers(playerTwo);
     const playerOneName = $("input#player1").val();
     const playerTwoName = $("input#player2").val();
+
     playerOne.name = playerOneName;
     playerTwo.name = playerTwoName;
-    console.log(playerOne);
-    console.log(playerTwo);
+
+    players.addPlayers(playerOne);
+    players.addPlayers(playerTwo);
+
     $("#total1").html(playerOne.total);
     $("#total2").html(playerTwo.total);
     $("#player-name").html(playerOne.name);
@@ -89,53 +159,11 @@ $(document).ready(function () {
   });
 
   $("button#roll").click(function () {
-    let diceQuantity = parseInt($("input[name=dice-quantity]:checked").val());
-    let rollSum = 0;
-    let roll1 = false;
-    let roll1Twice = false;
-    let player = players.findPlayer(id);
-
-    for (let i = 0; i < diceQuantity; i++) {
-      roll = rollFunction();
-      $(".dice" + (i + 1)).attr("id", "dice-" + roll);
-      console.log(roll);
-      rollSum += roll;
-      if (roll == 1) {
-        roll1 = true;
-        roll = 0;
-      } else if (roll1 && roll == 1) {
-        roll1Twice;
-      }
-    }
-
-    if (roll1) {
-      currentRoll = 0;
-      $("#this-roll").empty();
-      switchPlayer(id);
-    } else if (roll1Twice) {
-      currentRoll = 0;
-      player.total = 0;
-      switchPlayer(id);
-    } else {
-      currentRoll = rollTheDice(rollSum);
-      checkWinner(currentRoll, id);
-      $("#this-roll").html(rollSum);
-    }
-    $("#current-roll").html(currentRoll);
-    console.log(currentRoll);
+    rollBigFunction();
   });
 
   $("button#hold").click(function () {
-    let player = players.findPlayer(id);
-
-    player.sum(currentRoll);
-    $("#total" + player.id).html(player.total);
-
-    currentRoll = 0;
-    id = switchPlayer(id);
-
-    $("#this-roll").empty();
-    $("#current-roll").empty();
+    holdFunction();
   });
 
   $("button#play").click(function () {
@@ -148,11 +176,8 @@ $(document).ready(function () {
     $("#start-box").show();
     opponent = $("input[name=opponent]:checked").val();
 
-    console.log(opponent);
-    if (opponent === "computer") {
-    } else {
+    if (opponent === "player2") {
       $("#player2-option").show();
     }
-    id = 1;
   });
 });
